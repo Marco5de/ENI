@@ -1,0 +1,84 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[ngerman]{babel}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{esvect}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{todonotes}
+\usepackage{pgfplots}
+\usepackage{verbatim}
+\pgfplotsset{compat=1.10}
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{patterns}
+\usepackage{mathtools}
+\usepackage{centernot}
+
+\hypersetup{
+     colorlinks   = true,
+     citecolor    = gray
+}
+
+\title{Einführung in die Neuroinformatik Blatt1}
+\author{Dominik Authaler, Carolin Schindler und Marco Deuscher\\Gruppe Q}
+\date{Mai 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Lineares Neuronenmodell}
+\subsection{Differentialgleichung}
+Mit den gegebenen Vereinfachungen ergebn sich aus der gegeben DGL die folgenden
+vereinfachten DGL
+\begin{align*}
+    \tau \dot{u}_1&=-u_1(t)+x_1(t)\\
+    \tau\dot{u}_2&=-u_2(t)+c_{12}y_1(t)=-u_2(t)+c_{12}u_1(t)
+\end{align*}
+
+Die maximale Ausgabe des ersten Neurons ist 1, da es keine größeren Eingangswerte gibt und $x_1(t)$ der einzige externe Eingangswert ist.\\
+Die maximale Ausgabe des zweiten Neurons wird durch $c_12$ bestimmt. Der maximale Ausgang ist dann $\operatorname{max}(c_{12}*y_1(t))=\operatorname{max}(c_{12}*u_1(t))=c_{12}$.
+
+\subsection{Diskretisieren der Gleichungen}
+\begin{equation*}
+    \dot{u}_i(t)\approx\frac{u_i(t-\Delta t)-u_i(t)}{\Delta t} \Rightarrow u_i(t+\Delta t)\approx \Delta t \dot{u}_i(t)+u_i(t)
+\end{equation*}
+
+Durch einsetzen der Gleichungen von oben erhält man dann
+\begin{align*}
+    u_1(t+\Delta t)&=u_1(t)(1-\frac{\Delta t}{\tau})+\frac{\Delta t}{\tau}x_1(t)\\
+    u_2(t+\Delta t)&=u_2(t)(1-\frac{\Delta t}{\tau})+\frac{\Delta t}{\tau}c_{12}u_1(t)
+\end{align*}
+
+Diese Gleichungen können jetzt einfach in Python implementiert werden.
+
+
+\subsection{Interpretation der Ergebnisse}
+\paragraph{(a)}
+Die Funktionswerte fallen ab $t=15$ ab, da die Anregung durch $x_1(t)$ ab diesem Zeitpunkt beendet ist. Da es keine Weiteren Eingangssignale gibt, fällt das Potenzial am Neuron ab.\\
+Die Biologische Motivation
+\todo[inline]{biologische Motivation}
+
+\paragraph{(b)}
+
+
+\paragraph{(c)}
+Für den Fall $\tau=0$ gilt
+\begin{align*}
+    \tau \dot{u}_j(t)&=-u_j(t)+x_j(t)+\sum_{i=1}^n c_{ij}y_i(t-d_{ij})\\
+    \Rightarrow u_j(t)&=x_j(t)+\sum_{i=1}^n c_{ij}y_i(t-d_{ij})\\
+\end{align*}
+Es ergibt sich also eine instantane Änderung des Potenzials, wenn sich eine der Eingangsgrößen ändert.
+
+\paragraph{(d)}
+$c_{12}$ beschreibt die Stärke der Bindungs zwischen Neuron 1 und Neuron 2. Die Gewichtung ist ein Maß dafür, wie stark das Potenzial an Neuron 1 das an Neuron 2 beeinflusst.\\
+In unserem gibt es keine weiteren Eingangsgrößen an Neuron 2 und $y_1(t)=u_1(t)$. 
+
+\paragraph{(e)}
+Der Graph von $u_2(t)$ wird um $d_{12}$ nach recht verschoben.
+
+\end{document}
