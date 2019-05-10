@@ -1,9 +1,12 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[5]:
+
+
 import numpy as np
 import matplotlib.pyplot as plt
-import ipywidgets
 
-
-    
 def lin_model(tau,weight): 
     #create time vector with start tb=0 te=30 and dt=0.1
     tb=0
@@ -44,7 +47,16 @@ def lin_model(tau,weight):
         
     
     return [t,du1,du2,u1[1:],u2[1:]]
-   
+    
+#print(du2)
+
+
+# In[8]:
+
+
+import matplotlib.pyplot as plt
+from ipywidgets import interact, interactive, fixed, interact_manual
+import ipywidgets
 
 def plot_model(tau,weight):
     t,du1,du2,u1,u2=lin_model(tau,weight)
@@ -65,13 +77,23 @@ def plot_model(tau,weight):
     plt.title("Änderung des Potenzials am Neuron 2")
     plt.plot(t,du2)
     
-    matplotlib.pyplot.subplots_adjust(left=None, bottom=3, right=5, top=5, wspace=None, hspace=None)
+    plt.subplots_adjust(left=None, bottom=3, right=5, top=5, wspace=None, hspace=None)
     
     plt.show()
-    return
 
     
+    
+    
+    
+#plot_model(1,0.75) 
 interact(plot_model, tau=(0.1,10,0.1),weight=(0,1,0.05));
 
 
     
+
+
+# In[ ]:
+
+
+
+
