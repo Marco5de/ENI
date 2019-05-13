@@ -21,7 +21,8 @@ def lin_model(tau,weight):
             x1.append(0)
         else:
             x1.append(1)
-            
+    
+
     #computing u1-vector
     u1=[]
     u1.append(0)
@@ -72,7 +73,7 @@ def plot_model(tau,weight):
     plt.subplot(2,2,3)
     plt.title("Änderung des Potenzials am Neuron 1")
     plt.plot(t,du1)
-    
+
     plt.subplot(2,2,4)
     plt.title("Änderung des Potenzials am Neuron 2")
     plt.plot(t,du2)
