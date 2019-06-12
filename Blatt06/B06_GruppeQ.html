@@ -13113,9 +13113,38 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><h1><center>Einführung in die Neuroinformatik - Übungsblatt 6</center></h1></p>
+<h2><center>Dominik Authaler, Marco Deuscher und Carolin Schindler</center></h2>
+<h2><center>Gruppe Q</center></h2>
+<h2><center>Juni 2019</center></h2><h1 id="Aufgabe-1:-Cross-Entropy">Aufgabe 1: Cross Entropy<a class="anchor-link" href="#Aufgabe-1:-Cross-Entropy">&#182;</a></h1><h2 id="Teilaufgabe-1:">Teilaufgabe 1:<a class="anchor-link" href="#Teilaufgabe-1:">&#182;</a></h2><p>Die skalare Fehlerfunktion und die Verwendung von nur einem skaleren Ausgabewerte $y_\mu$ ist in diesem Fall nicht geeignet. Für die erste Aufgabe Eingabe $x_1$ produziert das Netz einen Fehler von $(3-1)^2 = 4$. Im Anschluss werden die Gewichte und der Bias verändert woraufhin das Netz für eine erneute Eingabe von einem Element aus Klasse 1 den folgenden Fehler macht: $(2-1)^2 = 2$. Man könnte nun darauf schließen, dass die Klassifiktion beim zweiten Mal besser war, allerdings ist es genauso falsch eine Element von Klasse 1 als Klasse 2 zu klassifizieren, wie ein Element aus Klasse 1 als Klasse 3 zu klassifizieren. Dies spiegelt sich nicht im Fehler wieder. Daher ist er hier nicht geeignet.</p>
+<h2 id="Teilaufgabe-3:">Teilaufgabe 3:<a class="anchor-link" href="#Teilaufgabe-3:">&#182;</a></h2><p>Es gilt $A(x_1,x_2,x_3,x_4) = (\frac{1}{8},\frac{1}{2},\frac{1}{4},\frac{1}{8})$ und $B(x_1,x_2,x_3,x_4) = (\frac{1}{2},\frac{1}{4},\frac{1}{8},\frac{1}{8})$. Für die Entropie gilt in beiden Fällen $H(A) = H(B) = 1,75$.</p>
+<h3 id="(a)">(a)<a class="anchor-link" href="#(a)">&#182;</a></h3><p>Berechnung der Cross-Entropy für Alice<br>
+$H_B(A) = \frac{1}{8} + \frac{1}{2}* 2 + \frac{1}{4} * 3 + \frac{1}{8} * 3 = 2,25$</p>
+<h3 id="(b)">(b)<a class="anchor-link" href="#(b)">&#182;</a></h3><p>Berechnung der Cross-Entropy für Bob
+$H_A(B) = \frac{1}{2} * \log_{2}8 + \frac{1}{4} * \log_{2}2 + \frac{1}{8} * \log_{2}4 + \frac{1}{8} * \log_{2}8 = \frac{3}{2} +\frac{1}{4} + \frac{1}{4} + \frac{3}{8} = 2.375$</p>
+<h3 id="(c)">(c)<a class="anchor-link" href="#(c)">&#182;</a></h3><p>Man sieht leicht dass $H_B(B) = H(B) = 1,75$</p>
+<h3 id="(d)">(d)<a class="anchor-link" href="#(d)">&#182;</a></h3><p>Allg. gilt $D_Q(P) = H_Q(P) - H(P)$<br>
+$D_A(B) = H_A(B) - H(B) = 2,375 - 1,75 = 0,625$<br>
+$D_B(A) = H_B(A) - H(A) = 2,25 - 1,75 = 0,5$<br>
+$D_B(B) = H_B(B) - H(B) = 0$</p>
+<h2 id="Teilaufgabe-4:">Teilaufgabe 4:<a class="anchor-link" href="#Teilaufgabe-4:">&#182;</a></h2><h3 id="(I)-$d_Q(P)-\ge-0$-f&#252;r-alle-$Q,P-\in-X$">(I) $d_Q(P) \ge 0$ f&#252;r alle $Q,P \in X$<a class="anchor-link" href="#(I)-$d_Q(P)-\ge-0$-f&#252;r-alle-$Q,P-\in-X$">&#182;</a></h3><p>Allg. gilt $D_Q(P) = H_Q(P) - H(P)$<br>
+Außerdem ist bekannt, dass das Minimum bei $H_P(P)$ liegt<br>
+Also gilt $H_Q(P) \ge H_P(P) = H(P)$ und $H(P) = \sum_x P(X) \log_{2}\frac{1}{P(x)} \ge 0$<br>
+da $P(X)\ge 0$ und $P(x) \le 1$ und damit $\log_{2}\frac{1}{P(x)} \ge 0$ folgt die Aussage.</p>
+<h3 id="(II)">(II)<a class="anchor-link" href="#(II)">&#182;</a></h3><p>Wurde bereits oben ausgerechnet und gezeigt, dass die beiden ungleich sind.</p>
+<h3 id="(III)-$d_Q(Q)-=-0$">(III) $d_Q(Q) = 0$<a class="anchor-link" href="#(III)-$d_Q(Q)-=-0$">&#182;</a></h3><p>$d_Q(Q) = H_Q(Q) - H(Q) = \sum_x Q(X) \log_{2}\frac{1}{Q(x)} -\sum_x Q(X) \log_{2}\frac{1}{Q(x)} = 0 $</p>
+<h2 id="Teilaufgabe-5:">Teilaufgabe 5:<a class="anchor-link" href="#Teilaufgabe-5:">&#182;</a></h2><h3 id="(a)">(a)<a class="anchor-link" href="#(a)">&#182;</a></h3><p>Es gilt $C_t(x_1,x_2,x_3,x_4) = (t*\frac{3}{4},(1-t)\frac{3}{4},\frac{1}{8},\frac{1}{8})$ mit $t\in[0,1]$.<br>
+Es wird eine Minimum erwartet wenn Charles Werte mit denen von Bob übereinstimmen, dies ist für $t = \frac{2}{3}$ der Fall, da $\frac{3t}{4} = \frac{1}{2}$ und $(1-t)\frac{3}{4} = \frac{1}{4}$ $\rightarrow t = \frac{2}{3}$</p>
+<h3 id="(b)">(b)<a class="anchor-link" href="#(b)">&#182;</a></h3>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -13164,13 +13193,13 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[10]:</div>
+    <div class="prompt output_prompt">Out[2]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.legend.Legend at 0x7f9429d4efd0&gt;</pre>
+<pre>&lt;matplotlib.legend.Legend at 0x7f620eb1e978&gt;</pre>
 </div>
 
 </div>
@@ -13193,6 +13222,66 @@ div#notebook {
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Aufgabe-2:-Cross-Entropy-als-Kostenfunktion">Aufgabe 2: Cross Entropy als Kostenfunktion<a class="anchor-link" href="#Aufgabe-2:-Cross-Entropy-als-Kostenfunktion">&#182;</a></h1><p>1.)<br>
+Die Softmax Funktion ist definiert als: $y_i = \frac{e^{c \cdot u_i}}{\sum_{j = 1}^{n}e^{c \cdot u_i}}$, für $c \in \mathbb{R}$ und $u_i = w_i \cdot x + b_i$.<br>
+a) Zu zeigen ist nun, dass diese Funktion eine gültige, diskrete Wahrscheinlichkeitsverteilung darstellt, d.h. das $\forall i: (y_i \geq 0)$ und $\sum_{i=1}^{n}y_i = 1$.
+Da für die Exponentialfunktion $\forall x: e^x &gt; 0$ gilt, ist ersteres sehr schnell gezeigt. Der Zähler ist lediglich eine Exponentialfunktion und daher immer positiv, für den Nenner gilt das Argument als Summe von Exponentialfunktionen analog. 
+Auch die zweite Bedingung kann relativ schnell gezeigt werden. Die entscheidenen Umformung ist dabei erlaubt, da der Nenner des Bruchs für alle Terme der äußeren Summe identisch ist:
+$\sum_{i=1}^{n}y_i = \sum_{i=1}^{n}\frac{e^{c \cdot u_i}}{\sum_{j=1}^{n}e^{c \cdot u_j}}$</p>
+<p>b) Zu zeigen: $y_1 = \frac{1}{1 + e^{c \cdot (u_2 - u_2)} + e^{c \cdot (u_3-u_1)}}$
+$$
+\begin{align*}
+    y_1 = \frac{e^{c \cdot u_1}}{\sum_{j=1}^{3}e^{c \cdot u_j}} = \frac{e^{c \cdot u_1}}{e^{c \cdot u_1} + e^{c \cdot u_2} + e^{c \cdot u_3}} = \frac{1}{1 + \frac{e^{c \cdot u_2}}{e^{c \cdot u_1}} + \frac{e^{c \cdot u_3}}{e^{c \cdot u_1}}} = \frac{1}{1 + e^{c \cdot (u_2 - u_1)} + e^{c \cdot (u_3-u_1)}}
+\end{align*}
+$$</p>
+<p>c) Im Folgenden soll nun eine Grenzwertbetrachtung für verschiedene Beziehungen zwischen $u_1, u_2$ und $u_3$ durchgeführt werden:<br>
+    i) $u_1 &gt; u_2 &gt; u_3$: $\lim\limits_{c \to \infty}y_1=\lim\limits_{c \to \infty}\frac{1}{1 + e^{c \cdot (u_2 - u_1)} + e^{c \cdot (u_3-u_1)}} = 1$<br>
+    ii) $u_2 &gt; u_1 &gt; u_3$: $\lim\limits_{c \to \infty}y_1=\lim\limits_{c \to \infty}\frac{1}{1 + e^{c \cdot (u_2 - u_1)} + e^{c \cdot (u_3-u_1)}} = 0$<br>
+    iii) $u_2 &gt; u_3 &gt; u_1$: $\lim\limits_{c \to \infty}y_1=\lim\limits_{c \to \infty}\frac{1}{1 + e^{c \cdot (u_2 - u_1)} + e^{c \cdot (u_3-u_1)}} = 0$</p>
+<p>d) In diesem Aufgabenteil sollte nun die verlinkte Animation für unterschiedliche Wertebereiche von c beschrieben werden:<br>
+i)   $c &gt; 0$: es zeigen sich starke Peaks für große Werte von $u_i$, je größer c wird, desto mehr verschiebt es sich zu einem Peak beim größten Wert von $u_i$<br>
+ii)  $c = 0$: hier haben alle Peaks die gleiche Höhe $\frac{1}{\text{Anzahl der Peaks}}$<br>
+iii) $c &lt; 0$: es zeigen sich starke Peaks für kleine Werte von $u_i$, je kleiner c wird, desto mehr verschiebt es sich zu einem Peak beim kleinsten Wert von $u_i$</p>
+<p>2.)<br>
+In dieser Aufgabe soll nun die neue Fehlerfunktion $E = D_y(t) = H_y(t) = -t_1 \cdot \ln{(y_1[u_1(w_1), u_2(w_2)]) - t_2 \cdot \ln{(y_2[u_1(w_1), u_2(w_2)])}}$ abgeleitet werden, wobei auf folgende Kettenregel zu achten ist: $\frac{\partial E}{\partial w_2} = \frac{\partial E}{\partial y_1}\frac{\partial y_1}{\partial u_2}\frac{\partial u_2}{\partial w_2} + \frac{\partial E}{\partial y_2}\frac{\partial y_2}{\partial u_2}\frac{\partial u_2}{\partial w_2}$. Der Einfachheit halber soll mit $c = 1$ gerechnet werden.</p>
+<p>a) 
+$$
+\begin{align*}
+\frac{\partial E}{\partial y_1} = -t_1 \cdot \frac{1}{y_1[u_1(w_1), u_2(w_2)]} \\
+\frac{\partial E}{\partial y_2} = -t_2 \cdot \frac{1}{y_2[u_1(w_1), u_2(w_2)]}
+\end{align*} 
+$$</p>
+<p>b) 
+$$
+\begin{align*}
+\frac{\partial y_1}{\partial u_2} = \frac{\partial}{\partial u_2} \left ( \frac{e^{u_1}}{e^{u_1} + e^{u_2}}\right) = e^{u_1} \cdot \frac{\partial}{\partial u_2}(e^{u_1} + e^{u_2})^{-1} = -e^{u_1} \cdot \frac{1}{(e^{u_1} + e^{u_2})^2} \cdot e^{u_2} = - \frac{e^{u_1}}{e^{u_1} + e^{u_2}} \cdot \frac{e^{u_2}}{e^{u_1} + e^{u_2}} = -y_1 \cdot y_2\\
+\frac{\partial y_2}{\partial u_2} = \frac{\partial}{\partial u_2}\left (\frac{e^{u_2}}{e^{u_1} + e^{u_2}}\right) = \frac{e^{u_2} \cdot (e^{u_1} + e^{u_2}) - e^{u_2} \cdot e^{u_2}}{(e^{u_1} + e^{u_2})^2} =  \frac{e^{u_2}}{e^{u_1} + e^{u_2}} \cdot \left ( \frac{e^{u_1} + e^{u_2}}{e^{u_1} + e^{u_2}} + \frac{e^{u_2}}{e^{u_1} + e^{u_2}}\right ) = y_2 \cdot (1 - y_2) 
+\end{align*} 
+$$</p>
+<p>c) 
+$$
+\begin{align*}
+\frac{\partial u_2}{\partial w_2} = \frac{\partial }{\partial w_2}\left( w_2 \cdot x + b_2\right ) = x
+\end{align*} 
+$$</p>
+<p>d) Zu beachten: $t_1 + t_2 = 1$
+$$
+\begin{align*}
+\frac{\partial E}{\partial w_2} = \frac{\partial E}{\partial y_1}\frac{\partial y_1}{\partial u_2}\frac{\partial u_2}{\partial w_2} + \frac{\partial E}{\partial y_2}\frac{\partial y_2}{\partial u_2}\frac{\partial u_2}{\partial w_2} = -t_1 \cdot \frac{1}{y_1} \cdot {y_1 \cdot y_2} \cdot x + (-t_2) \cdot \frac{1}{y_2} \cdot y_2 \cdot (1-y_2) \cdot x = (t_1y_2 - t_2 \cdot (1 - y_2))x = (t_1y_2 + t_2y_2 -t_2)x = ((t_1 + t_2)y_2-t_2)x = (y_2 - t_2)x 
+\end{align*}
+$$
+e) Partielle Ableitung nach w der quadratischen Fehlerfunktion:
+$$
+\frac{\partial E_{quad}}{\partial w} = - \sum_{\mu=1}^{M}(T_{\mu} - f(w \cdot x_{\mu}+b)) \cdot f'(w \cdot x_{\mu}+b) \cdot x_{\mu}
+$$
+Vergleicht man die beiden erhaltenen Ableitungen, so fällt auf, dass die Summe über die Datenpunkte bei der Cross Entropy Fehlerfunktion fehlt. Abgesehen davon fehlt außerdem die Ableitung der Transferfunktion. Weiterhin vorhanden ist der Vergleich mit dem Lehrersignal (in etwas abgeänderter Form) und der Faktor x.</p>
+
+</div>
+</div>
 </div>
     </div>
   </div>
