@@ -111,7 +111,7 @@ def train_network(n_hidden,data,T):
       
     keras.utils.plot_model(model,"test.png",show_shapes = True);
     #Lernrate war viel zu groß
-    sgd = keras.optimizers.SGD(lr=0.02, decay=0.0001, momentum=0.9,nesterov=True) 
+    sgd = keras.optimizers.SGD(lr=0.01, decay=0.0001, momentum=0.9,nesterov=True) 
 
     with session.as_default():
         with session.graph.as_default():
@@ -123,16 +123,15 @@ def train_network(n_hidden,data,T):
 n=3
 combs,T = init_data(n)
 
-
 min_loss_flat = []
 min_loss_deep = []
-
+'''
 #net should have nx[0]+1 layers
-#nx = [7,7];
-nx = 8;
+nx = [7,7];
+#nx = 8;
 evaluate = train_network(nx,combs,T)
 print(evaluate)
-
+'''
 
 def print_trainingsdata(combs,T):
     count=0
@@ -140,7 +139,6 @@ def print_trainingsdata(combs,T):
         print("%1.1f %1.1f %1.1f %1.1f %1.1f %1.1f    TRAIN:%1.1f \n" % (x[0],x[1],x[2],x[3],x[4],x[5],T[count]))
         count = count+1
 
-'''
 for i in range(2,2**n+4):
     min_loss_flat.append(train_network(i,combs,T))
     
@@ -148,4 +146,3 @@ for i in range(1,n+4):
     min_loss_deep.append(train_network([i,i],combs,T))
 print("Min Loss Flat: " + str(min_loss_flat))
 print("Min Loss Deep " + str(min_loss_deep))
-'''
