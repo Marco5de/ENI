@@ -117,10 +117,10 @@ def train_network(n_hidden,data,T):
         with session.graph.as_default():
             model.compile(loss='mse',optimizer =sgd)
             history = model.fit(data,T,epochs=1000,batch_size=16)
-            return(min(history.history['loss']), len(model.layers))
+            return min(history.history['loss'])
 
     
-n=3
+n=5
 combs,T = init_data(n)
 
 min_loss_flat = []
@@ -146,3 +146,23 @@ for i in range(1,n+4):
     min_loss_deep.append(train_network([i,i],combs,T))
 print("Min Loss Flat: " + str(min_loss_flat))
 print("Min Loss Deep " + str(min_loss_deep))
+
+
+
+x1 = np.arange(2,2+len(min_loss_flat),1)
+x2 = np.arange(2,2+len(min_loss_deep),1)
+
+
+
+fig = plt.figure()
+plt.title("n = " + str(n))
+plt.xlabel('Number of neurons')
+plt.ylabel('MSE')
+plt.plot(x1, min_loss_flat, label='Flat hierarchy', marker='o')
+plt.plot(x2, min_loss_deep, label='Deep hierarchy', marker='o')
+plt.tight_layout()
+plt.legend()
+plt.grid(color='lightgrey', linestyle='-', linewidth=1)
+
+figureName = "n=" + str(n) + ".png";
+plt.savefig(figureName)
