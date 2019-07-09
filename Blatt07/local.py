@@ -74,8 +74,9 @@ def train_network(n_hidden,data,T):
     session = tf.Session(config=None)
     keras.backend.set_session(session)
     
-    n_input = sum(data[0].shape)
     
+    n_input = sum(data[0].shape)
+
     model = keras.models.Sequential()
    
     init = keras.initializers.RandomUniform(minval=-0.5, maxval=0.5, seed=seed)
@@ -116,15 +117,16 @@ def train_network(n_hidden,data,T):
     with session.as_default():
         with session.graph.as_default():
             model.compile(loss='mse',optimizer =sgd)
-            history = model.fit(data,T,epochs=1000,batch_size=16)
+            history = model.fit(data,T,epochs=1000,batch_size=32)
             return min(history.history['loss'])
 
     
-n=5
+n=3
 combs,T = init_data(n)
 
 min_loss_flat = []
 min_loss_deep = []
+
 '''
 #net should have nx[0]+1 layers
 nx = [7,7];
@@ -148,7 +150,6 @@ print("Min Loss Flat: " + str(min_loss_flat))
 print("Min Loss Deep " + str(min_loss_deep))
 
 
-
 x1 = np.arange(2,2+len(min_loss_flat),1)
 x2 = np.arange(2,2+len(min_loss_deep),1)
 
@@ -166,3 +167,4 @@ plt.grid(color='lightgrey', linestyle='-', linewidth=1)
 
 figureName = "n=" + str(n) + ".png";
 plt.savefig(figureName)
+
