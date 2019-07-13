@@ -1,0 +1,99 @@
+\paragraph{Ziele}
+\begin{itemize}
+    \item kompetitive Netze führen eine Reduktion der Datenpunkte auf einige Prototypen durch 
+    \item Kohohnen SOM: Reduktion der Datenpunkte auf Prototypen und Visualisierung der Prototypen durch nachbarschaftserhaltende Projektion 
+    \item es wird versucht eine Reduktion der Datenpunkte auf repräsentative Merkmale zu erhalten, welche sich durch lineare Kombination der vorhandenen Merkmale ergeben
+\end{itemize}
+
+\section{Hauptachsentransformation}
+\subsection{Hauptachsen}
+\begin{itemize}
+    \item Merkmale in denen die Daten nicht variieren sind bedeutungslos 
+    \item Hauptachsen sind ONS $(v_i)_{i=1}^l\in\mathbb{R}^d$ mit $l\leq d$, dass die Ursprüglichen Daten mit möglichst geringen Fehler repräsentiert
+    \item 1. Hauptachse beschreibt Vektor $v_1$ mit der größten Variation\\
+        2. Hauptachse beschreibt Vektor $v_2$ mit zweitgrößter Variation und senkrecht auf $v_1$\\
+        und so weiter
+\end{itemize}
+
+\subsection{Hauptachsentransformation}
+\begin{itemize}
+    \item Gegeben sei eine Datenmenge mit $M$ Punkten $x^\mu\in\mathbb{R}^d$ als Datenmatrix $X\in\mathbb{R}^{M\times d}$
+    \item Die einzelnen Merkmale (Spaltenvektoren in X) haben Mittelwert 0
+    \item Die Projektion zweier Vektoren $v\in\mathbb{R}^d$ auf $x \in X$ ist gegeben durch $\langle v,x^\mu \rangle = \sum_{i=1}^dv_ix_i^\mu $
+    \item Für alle Datenpunkte ixt $Xv$ der Vektor mit den Datenprojektionen
+    \item $(v_i)_{i=1}^d\in\mathbb{R}^d$ ein ONS
+    \item $l<d$. Für $x\in\mathbb{R}^d$ gilt dann mit $\alpha_i = \langle x,v_i \rangle$\\ 
+        $x = \alpha_1v_1 + \dots + \alpha_lv_l + \dots +\alpha_dv_d$\\
+        Definiere $\Tilde{x} = \alpha_1v_1 + \dots + \alpha_lv_l$
+\end{itemize}
+
+Es wird nun der Fehler zwischen $x$ und $\Tilde{x}$ betrachtet.
+\begin{equation*}
+    e_l(x)=\norm{x-\Tilde{x}}_2^2 = \norm{\sum_{j=+1}^d\alpha_jv_j}_2^2
+\end{equation*}
+Es soll nun die Summe des Fehlers über alle Daten minimiert werden
+\begin{equation*}
+    \sum_\mu e_l(x^\mu) = \sum_\mu \langle \sum_{j=l+1}^d\alpha_j^\mu v_j, \sum_{j=l+1}^d\alpha_j^\mu v_j \rangle = \sum_\mu \sum_{j=l+1}^d(\alpha_j^\mu)^2 \rightarrow \texttt{min}
+\end{equation*}
+
+Aus dem oben beschrieben folgt dann
+\begin{equation*}
+    (\alpha_j^\mu)^2 = \alpha_j^\mu \cdot \alpha_j^\mu = (v_j^Tx^\mu)((x^\mu)^Tv_j) = v_j^T(x^\mu(x^\mu)^T)v_j
+\end{equation*}
+Mitteln über alle Muster
+\begin{equation*}
+    \frac{1}{M}\sum_\mu\sum_{j=l+1}^dv_j^T(x^\mu(x^\mu)^T)v_j = \sum_{j=l+1}^dv_j^T\frac{1}{M}\sum_\mu(x^\mu(x^\mu)^T)v_j
+\end{equation*}
+
+Durch $R=\frac{1}{M}\sum_\mu(x^\mu(x^\mu)^T)$ ist der Korrelationsmatrix der Datenmenge $X$ gegeben.\\
+Es muss also der folgende Term minimiert werden
+\begin{equation*}
+    \sum_{j=l+1}^dv_j^TRv_j \rightarrow \texttt{min}
+\end{equation*}
+
+Damit die $v_j$ nicht zu 0 minimiert werden, muss eine Nebenbedingung eingeführt werden. Wähle $v_j^Tv_j = \norm{v_j}^2$ als Nebenbedingung.\\
+Auf dieses Problem kann die Methode der Lagrange Multiplikatoren angewendet werden.
+\begin{equation*}
+    \varphi(v_{l+1},\dots,v_d) = \sum_{j=l+1}^dv_j^TRv_j - \sum_{j=l+1}^d\lambda_j(v_j^Tv_j-1)
+\end{equation*}
+hierbei sind $\lambda_j\in\mathbb{R}$ die Lagrange-Multiplikatoren.\\
+Differenzieren der Lagrange-Funktion nach $v_j$ liefert dann 
+\begin{equation*}
+    \frac{\partial\varphi}{\partial v_j} = 2Rv_j-2\lambda_j v_j=0
+\end{equation*}
+Man erhält daraus das Eigenwertproblem
+\begin{equation*}
+    Rv_j = \lambda_jv_j \quad j=l+1,\dots,d
+\end{equation*}
+Das gesuchte ONS $(v_j)_{j=1}^d$ sind also Eigenvektoren von $R$. R ist symmetrisch und nichtnegativ-definit, d.h. alle Eigenwerte sind reell und nichtnegativ.
+
+\paragraph{Vorgehen}
+\begin{itemize}
+    \item Merkmale auf Mittelwert $\mu=0$ transformieren
+    \item Kovarianzmatrix $C=X^TX$ berechnen
+    \item Eigenwerte $\lambda_1,\dots,\lambda_d$ und Eigenvektoren $v_1,\dots,v_d$ von C bestimmen
+    \item Daten X auf die $d'\leq d$ Hauptachsen projizieren, d.h. $X' = XV$ mit $V=(v_1,v_2,\dots,v_{d'})$
+\end{itemize}
+
+Man hat nun also die neue Datenmatrix $X'$ mit M Zeilen und $d'$ Merkmalen erhalten.
+
+\section{Neuronale Hauptachsentransformation}
+\subsection{Oja-Lernregel}
+\begin{itemize}
+    \item Lineare Verrechnung der Eingabe $x$ und dem Gewichtsvektor $c$ (einzelnes lineares Neuron)\\
+        $y = \langle x,c \rangle = \sum_{i=1}^nx_ic_i$
+    \item Lernregeln von Oja\\
+        $\Delta c = l_ty(x-yc)$
+    \item Gewichtsvektor $c$ konvergiert gegen die 1. Hauptachse $v_1$ (wenn gilt $l_t\to 0$ bei $t\to\infty$ und $\sum_t l_t = \infty$ und $\sum_t l_t^2<\infty$)    
+\end{itemize}
+
+\noindent Hat man die erste Hauptachse erhalten, kann man mit dieser Information die anderen ausrechnen.
+
+\subsection{Sanger-Lernregel}
+\begin{itemize}
+    \item Verallgemeinerung auf $d'\leq d$ lineare Neuronen mit $d'$ Gewichtsvektoren $c_j$. Die Ausgabe des j-ten Neurons ist gegeben durch\\
+    $y_j = \langle x,c_j \rangle$
+    \item Lernregel nach Sange\\
+        $\Delta c_{ij} = l_ty_j(x_i -\sum_{k=1}^jy_kc_{ik}$
+    \item $c_l$ konvergiert gegen die Hauptachsen $v_l$ (wenn Bedingungen von oben gegeben sind)    
+\end{itemize}

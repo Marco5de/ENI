@@ -1,0 +1,87 @@
+\documentclass{report}
+\usepackage[a4paper, margin=3cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{todonotes}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{siunitx}
+
+%Necessary for sha letter
+\DeclareFontFamily{U}{wncy}{}
+\DeclareFontShape{U}{wncy}{m}{n}{<->wncyr10}{}
+\DeclareSymbolFont{mcy}{U}{wncy}{m}{n}
+\DeclareMathSymbol{\Sh}{\mathord}{mcy}{"58} 
+
+% Change emph to boldface instead of cursive
+\DeclareTextFontCommand{\emph}{\boldmath\bfseries}
+
+% Inline Vectors: $\icol{a\\b}$, $\irow{a&b}$
+\newcommand{\icol}[1]{% inline column vector
+  \left(\begin{smallmatrix}#1\end{smallmatrix}\right)%
+}
+
+\newcommand{\irow}[1]{% inline row vector
+  \begin{pmatrix}#1\end{pmatrix}%
+}
+
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand*\diff{\mathop{}\!\mathrm{d}}
+\newcommand*\Diff[1]{\mathop{}\!\mathrm{d^#1}}
+
+\title{Neuroinformatik Summary}
+\author{
+  Dominik Authaler\\
+  \texttt{dominik.authaler@uni-ulm.de}
+  \and
+  Jonas Otto\\
+  \texttt{jonas@jonasotto.com}
+  \and
+  Marco Deuscher\\
+  \texttt{marco.deuscher@uni-ulm.de}
+  \and
+   Luca Krüger\\
+  \texttt{luca.krueger@uni-ulm.de}
+  \and
+  Carolin Schindler\\
+  \texttt{carolin.schindler@uni-ulm.de}
+}
+\date{July 2019}
+
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\listoftodos
+
+
+\todo[inline]{Verbesserungen des überwachten Lernen (Quickprop etc.)}
+\todo[inline]{Allgmein einfügen der Erkenntnisse aus den Übungsblätter}
+\todo[inline]{}
+
+\chapter{Neuronale Modelle}
+\input{neuron_modelle.tex}
+
+
+\chapter{Neuronale Architekturen}
+
+\input{neuro_arch.tex}
+
+\chapter{Lernregeln für neuronale Netze}
+\input{neuro_lernregeln.tex}
+
+\chapter{Radiale Basisfunktionen (RBF)}
+\input{RBF.tex}
+
+\chapter{Methoden zur Merkmalsreduktion}
+\input{Merkmalsreduktion.tex}
+
+\end{document}

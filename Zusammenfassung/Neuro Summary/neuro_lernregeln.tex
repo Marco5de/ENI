@@ -1,0 +1,178 @@
+\emph{Lernen} als erwerb von Wissen. \emph{Gedächtnis} gelerntes Wissen kann wiedergefunden werden.\\
+Es kann gelernt werden  durch verändern der Verbindungsstruktur (Anzahl Neuronen/ Schichten) oder Ändern der Verbindungsstärken. 
+
+\section{Lernen durch Änderung der Synapsenstärke}
+\begin{itemize}
+    \item Änderung der Synapsenstärke durch DGL beschrieben
+    \item Änderung der synaptischen Kopplungen deutlich langsamer als Änderung der neuronalen Zustände
+\end{itemize}
+$\rightarrow$ Praxis: Lernen von der Anwednungsphase getrennt
+
+\paragraph{Aufwand beim Lernen in Netz mit n Neuronen}
+Es sind $n^2$ Multiplikationen nötig um Zustände aller n Neuronen festzustellen. Bei einer DGL pro Synapse bereits $n^2$ DGLn\\
+$\rightarrow$ Zu großer Aufwand. Skaliert nicht für große Netze.
+
+\section{Allgemeine lokale Lerneregel}
+Ändern einer synaptischen Kopplung $c_{ij}$ soll durch lokale Größen bestimmt sein. Diese Idee ist auch biologisch sinnvoll.
+\paragraph{DGL}
+\begin{equation*}
+    \Delta c_{ij}(t) = c_{ij}(t) - c_{ij}(t-\Delta t) = -v(t)c_{ij}(t)+l(t)(y_i(t)-ac_{ij}(t)-b)(\delta_i(t)-c)
+\end{equation*}
+Meist wird $\Delta t=1$ gewählt. $v(t)$ ist die Vergessensrate, häufig $v(t) = 0$. $l(t)$ ist die Lernrate, i.d.R. $l(t)>0$ monoton fallend. $a,b,c$ Konstanten, meist $a=b=c=0$. $\delta_i(t)$ Form wird durch Art des Lernens bestimmt.
+
+\subsection{Unüberwachtes Lernen (Hebb'sche Lernregel)}
+Wähle $\delta_j(t) = u_j(t)$ oder $\delta_j(t) = y_j(t)$\\
+\begin{equation*}
+    \Delta c_{ij}(t) = l(t)y_i(t)y_j(t) \qquad \text{(Hebb'sche Lernregel)}
+\end{equation*}
+\textbf{Idee:} \textit{Wenn Axon der Zelle A nahe genug ist, um eine Zelle B zu erregen, kommt es zu einem Wachstumsprozess in einer oder beiden Zellen. Die Effizienz von Zella A auf Zelle B wächst}
+
+\section{Überwachtes Lernen}
+\begin{itemize}
+    \item Es ist ein Lehrersignal $T_j$ des j-ten Neurons gegeben
+    \item Ausgabe $y_i$ beeinflusst $y_j$ über $c_{ij}$
+\end{itemize}
+\textbf{Idee:} Ausgabe $y_j$ soll durch Änderung der synaptischen Kopplungsstärke $c_{ij}$ möglichst auf das Lehrersignal $T_j$ geregelt werden.
+
+\subsection{Delta-Lernregel}
+$\delta_j$ hat die Form $d_j(t) = T_j - y_j(t)$, also
+\begin{equation*}
+    \Delta c_{ij}(t) = l(t)y_i(t)(T_j(t)-y_j(t))
+\end{equation*}
+
+\subsubsection{Delta-Lernregel für nicht lineares Neuron}
+$y_j(x) = f(\sum_{i=1}^nc_{ij}y_i)$ und $u_j = \sum_{i=1}^nc_{ij}y_i$ und $f$ ist eine diff'bare Transferfunktion.\\
+Für die Änderung der Ausgabe ergibt sich dann
+\begin{align*}
+    y_j^{neu} -y_j & =  f(\sum_{i=1}^nc_{ij}^{neu}y_i) - f(\sum_{i=1}^nc_{ij}y_i)\\
+    &= f'(z)(u_j^{neu}-u_j)\\
+    &= f'(z)(c_{ij}^{neu}-c_{ij})y_i\\
+    &= lf'(z)(T_j-y_j)y_i^2\\
+    &\rightarrow y_j^{neu} = y_j +  lf'(z)(T_j-y_j)y_i^2
+\end{align*}
+
+Man kann hier leicht sehen, dass wenn $T_j = y_j$ bereits gegeben ist keine Veränderungen mehr stattfinden. Ansonsten ändert sich der Output in Richtung des Lerhersignals.\\
+Ist die Lernrate $l>0$ wird der Fehler kleiner.
+
+\subsection{Kostruktion von Lernregeln}
+\textbf{Ziel:} Lernverfahren soll Fehler zw. Lehrer und Netzausgabe minimieren\\
+Es sind Trainingsdaten gegeben durch
+\begin{equation*}
+    T = \{(x^\mu,T^\mu) \quad|\quad x^\mu \in \mathbb{R}^d, T^\mu \in \mathbb{R}^n, \mu=1,\dots,M\}
+\end{equation*}
+
+Der Unterschied vom Lehrer zur Ausgabe wird durch eine Abstandsfunktion gemessen
+
+\begin{equation*}
+    \norm{T^\mu - y^\mu}_p = (\sum_{i=1}^n (T^\mu - y^\mu)^p)^{\frac{1}{p}}
+\end{equation*}
+mit p=1 ergibt sich der Manhatten Abstand und für p=2 die euklidische Norm.\\
+Die Netzausgabe $y$ hängt von der Kopplungsmatrix $C$ ab ($y=y(C)$).\\
+$\rightarrow$ es wird $C^*$ gesucht, so dass Fehler minimal.\\
+Definiere Fehler $E(C) = \sum_{\mu=1}^M \sum_{j=1}^n(T_j^\mu - y_j^\mu)^2$
+
+\subsection{Optimieren der Zielfunktion}
+Die Fehlerfunktion ist eine reelle Funktion: $E(C): \mathbb{R}^r\to \mathbb{R}$. Es wird ein $C^*$ gesucht, so dass die Fehlerfunktion E minimiert wird. 
+\begin{equation*}
+    E(C^*)\leq E(C) \quad \forall C
+\end{equation*}
+Dann ist $C^*$ ein globales Minimum, in der Regel nicht analytisch berechenbar.\\
+Es werden numerische Methoden zum finden eines lokalen Minimums verwendet.\\
+\textbf{Verfahren:}
+\begin{enumerate}
+    \item $t=0$, Wähle $l>0$ und Startwert $C(0)$ und $\epsilon>0$
+    \item Iterierte Vorschrift $t=0,1,\dots,\text{bis }\norm{\Delta C}<\epsilon$
+\end{enumerate}
+
+\subsection{Lernregeln für einschleifige Netze}
+Trainingsmenge $ T = \{(x^\mu,T^\mu) \quad|\quad x^\mu \in \mathbb{R}^d, T^\mu \in \mathbb{R}^n, \mu=1,\dots,M\}$\\
+Das Neuronale Netz besteht aus einer Schicht (ohne Inputlayer) aus n nicht linearen Neuronen
+
+\paragraph{Vorwärtsphase}
+\begin{enumerate}
+    \item $u_j^\mu = \langle x,c_j\rangle$
+    \item Netzausgabe $y_j^\mu = f(u_j^\mu)$
+\end{enumerate}
+
+\paragraph{Gradientenverfahren}
+Definiere Fehlerfunktion zu $E(C) = \sum_{\mu=1}^M\norm{T^\mu-y^\mu}_2^2\rightarrow \text{min}$
+
+\begin{enumerate}
+    \item $\frac{\partial}{\partial c_{ij}}E(C) = \sum_{\mu=1}^M 2(T_j^\mu-y_j^\mu)(-f'(u_j^\mu))x_i^\mu$
+    \item $c_{ij}(t+1) = c_{ij}(t) + l(t)\sum_{\mu=1}^M 2(T_j^\mu-y_j^\mu)(-f'(u_j^\mu))x_i^\mu$
+\end{enumerate}
+Dies entspricht der Batch-Lernregel, da alle Trainingsdaten dem Netz präsentiert werden, bevor die Gewichte angepasst werden.
+
+\paragraph{Inkrementelle Version}
+\begin{equation*}
+    c_{ij}(t+1) = c_{ij}(t)+2l(t)(T_j^\mu-y_j^\mu)x_i^\mu
+\end{equation*}
+
+Dieses Verfahren wird so lange iteriert bis der Fehler kleiner als eine zuvor festgelegte Güte ist.
+
+\subsection{Lernen beim Perzeptron}
+Grundidee des Perzeptrons als Schwellwertneuron:\\
+Dendritisches Potential:
+\begin{equation*}
+    u=\sum_{i=1}^m x_i w_i + b
+\end{equation*}
+Ausgabe:
+\begin{equation*}
+    y= \begin{cases}
+        1 &\text{für } u \geq 0\\
+        0 &\text{sonst}
+    \end{cases}
+\end{equation*}
+So ein Perzeptron kann Daten in 2 Klassen separieren, im zweidimensionalen Fall z.B. durch eine Gerade.
+\paragraph{Lernalgorithmus}
+Für jedes Muster (Eingabe $x$ mit Lehrersignal $T$ wird dieser Lernschritt durchgeführt:
+\begin{enumerate}
+    \item Berechnen der Ausgabe $y$ des Netzes aufgrund der Eingabe $x$
+    \item Berechnen des Fehlers $\delta = T - y$ mit Lehrersignal $T$
+    \item Anpassen der Gewichte $w_i(t+1) = w_i(t) + \eta \delta x_i$
+\end{enumerate}
+Der Bias $b$ kann als weiteres Gewicht mit konstantem Eingang betrachtet werden und muss beim Lernen nicht explizit betrachtet werden.\\
+Falls eine Lösung existiert ($\iff$ Klassen sind linear separierbar) konvergiert dieser Lernalgorithmus in endlicher Zeit
+(Beweis Seite 90f).
+\todo[inline]{Beweis aufschreiben oder für irrelevant erklären}
+
+\subsection{Lernen beim Multi Layer Perzeptron (MLP)}
+Hier werden nicht nur mehrere Perzeptrons(?) verwendet, die Neuronen haben beim MLP auch eine sigmoide Funktion
+(z.B. $f(x) = \frac{1}{1+\exp{(-\beta x)}}$) als Transferfunktion (notwendig für Differenzierbarkeit).
+\todo[inline]{Ist das noch ein Perzeptron wenn man andere Fehlerfunktion verwendet?}
+Für die Fehlerfunktion $E(T)$ wird hier die quadratische Fehlerfunktion $E(T)=|T-y|^2=\sum_{i=1}^m (T_i-y_i)^2$ verwendet.
+Der gesamte Fehler über alle Muster berechnet sich aus der Summe über die Fehler jedes einzelnen Musters.
+(Einsetzen der Formel mit Absicht weggelassen weil Indexschlacht)\\
+Das Lernen erfolgt hier wieder per Gradientenabstieg, um ein (lokales) Minimum der Fehlerfunktion zu finden.
+Für das Lernen von Gewichten muss aufgrund der vielen Layer \emph{Backpropagation} verwendet werden:
+
+\paragraph{Backpropagation (Online)}
+Das Prinzip bei Backpropagation ist es, die Fehler, die initial nur von der letzten (Ausgabe-)Schicht ablesbar sind, von hinten nach vorne zu propagieren, um in jeder Schicht Gewichte anzupassen. Dies wird für alle Trainingsdaten ausgeführt, was dann eine \emph{Epoche} genannt wird.\\
+Algorithmus für eine Epoche:\\
+\todo[inline]{Für mehr Lesbarkeit Indices durch Beschränkung auf einzelne Neuronen eliminieren}
+Für jedes Muster $x$ mit Lehrersignal $T$:
+\begin{enumerate}
+    \item Vorwärtsphase: Berechnen der Netzwerkausgabe $y$ für ein Muster $x$
+    \item Fehlerberechnung für alle Ausgabeneuronen $j=1\dots n$ anhand des Lehrersignals $T$:\\
+        $\delta_j^{(n)} = (T_j - y_j)f'(u_j^{(n)})$
+    \item Fehlerrückvermittlung (Schicht $k = 1\dots n-1$ mit $i$ Neuronen, $j$ Neuronen in nachfolgender Schicht $k+1$):\\
+        $\delta_i^{(k)} = \sum_j w_{ij}^{(k+1)} \delta_j^{(k+1)} f'(u_i^{(k+1)})$\\
+        (Hierbei iteratives Vorgehen von $k=n-1$ bis $k=1$)
+    \item Lernen: In Schicht $k$ für jedes Gewicht der Eingabe $i$ auf Neuron $j$: $w_{ij} = w_{ij} + \eta y_i^{(k-1)} \delta_j$,
+        dabei ist $y_i^{(k-1)}$ die Ausgabe der vorherigen Schicht bzw beim ersten Layer die Eingabe in das Netzwerk $x$.
+\end{enumerate}
+Obwohl in jeder Epoche jedes Muster benutzt wird, ist das Lernen erst nach mehreren Epochen abgeschlossen.
+
+\paragraph{Backpropagation (Batch)}
+Auch bei Backpropagation können die Trainingsdaten zu Batches zusammengefasst werden.\\
+Ein Gewichtsupdate findet hier erst nach Präsentation aller Muster des Batches statt, der Lernschritt
+lautet nun $w_{ij} = w_{ij} + \eta \sum_\mu y_{\mu i}^{(k-1)} \delta_{\mu j}$.
+\todo[inline]{Batch Modus überprüfen}
+
+\todo[inline]{Backprop. mit Momentum}
+
+
+
+\input{Neuronale_Lernregeln/unueberwachtesLernen.tex}
+
+\input{Neuronale_Lernregeln/konstruktiveLernverfahren.tex}
